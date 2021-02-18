@@ -3,7 +3,7 @@
 
 Halo, zademn here. 
 
-These are my implementations for the CryptoPals challenges in Rust. I took the challenges in order to learn the Rust programming language. 
+These are my implementations of the CryptoPals challenges in Rust. I took the challenges in order to learn the Rust programming language. 
 
 The project is structured as follows
 - each set has a `cargo` project
