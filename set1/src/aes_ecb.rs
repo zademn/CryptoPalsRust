@@ -14,9 +14,9 @@ pub fn aes_encrypt(messsage: &[u8], key: &[u8]) -> Vec<u8> {
     // check len to be a multiple of 16, we let the user take care of the padding
     assert_eq!(messsage.len() % 16, 0);
 
-    type AES128ECB = Ecb<Aes128, NoPadding>;
+    type Aes128Ecb = Ecb<Aes128, NoPadding>;
     let iv: [u8; 16] = Default::default();
-    let cipher = AES128ECB::new_var(key, &iv).unwrap();
+    let cipher = Aes128Ecb::new_var(key, &iv).unwrap();
 
     let ciphertext = cipher.encrypt_vec(&messsage);
 

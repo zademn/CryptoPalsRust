@@ -1,9 +1,12 @@
 pub fn pkcs7_unpad(s: &[u8]) -> Result<Vec<u8>, String> {
     let padding_number = s[s.len() - 1];
-    let res_len = s.len() - padding_number as usize;
-
     // check padding
-    if s[res_len..].iter().any(|&x| x != padding_number){
+    if s.len() < padding_number as usize {
+        return Err(String::from("Invalid padding"));
+    }
+    
+    let res_len = s.len() - padding_number as usize;
+    if s[res_len..].iter().any(|&x| x != padding_number) {
         return Err(String::from("Invalid padding"));
     }
     let mut res = vec![0 as u8; res_len];
@@ -36,12 +39,12 @@ pub fn challenge9() {
     println!("{:?}", s_unpad);
 
     // Invalid padding
-    s_pad[s_pad_len-2..].copy_from_slice(&[2, 3]);
+    s_pad[s_pad_len - 2..].copy_from_slice(&[2, 3]);
     let mut s_unpad: Vec<u8> = Vec::new();
-    match pkcs7_unpad(&s_pad){
+    match pkcs7_unpad(&s_pad) {
         Ok(v) => {
             s_unpad = v;
-        },
+        }
         Err(e) => {
             println!("Error: {}", e);
         }

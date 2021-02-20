@@ -16,6 +16,7 @@ pub fn kv_parse(s: &str) -> IndexMap<String, String> {
     }
     return hmap;
 }
+
 pub fn kv_encode(hmap: IndexMap<String, String>) -> String {
     let mut s = String::new();
     for (key, value) in &hmap {
@@ -29,12 +30,14 @@ struct ProfileMaker {
     uid: u32,
     key: Vec<u8>,
 }
+
 impl ProfileMaker {
     fn new() -> ProfileMaker {
         let mut rng = rand::thread_rng();
         let key = (0..16).map(|_| rng.gen::<u8>()).collect::<Vec<u8>>();
         return ProfileMaker { uid: 0, key: key };
     }
+
     fn profile_for(&mut self, s: &str) -> Option<String> {
         if s.contains('=') || s.contains('&') {
             return None;
@@ -53,6 +56,7 @@ impl ProfileMaker {
         let ciphertext = aes_encrypt(&s, &self.key);
         return ciphertext;
     }
+
     fn decrypt_profile(&self, ciphertext: &[u8]) -> IndexMap<String, String> {
         let profile = aes_decrypt(ciphertext, &self.key);
         let profile = u8_to_ascii(&pkcs7_unpad(&profile).unwrap());

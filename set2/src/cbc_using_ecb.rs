@@ -1,20 +1,21 @@
 use reqwest;
 
 use crate::oracle::Encrypt;
-use crate::pkcs7_padding::{pkcs7_pad, pkcs7_unpad};
+use crate::pkcs7_padding::{pkcs7_pad};
 use base64;
 use rand::Rng;
 use set1::aes_ecb::{aes_decrypt, aes_encrypt};
 use set1::fixed_xor::xor;
-use std::{env::temp_dir, error::Error};
+use std::{error::Error};
 use utils::number::u8_to_ascii;
+
 pub struct CbcOracle {
     key: Vec<u8>,
 }
 
 impl CbcOracle {
     pub fn new(key: Option<&[u8]>) -> CbcOracle {
-        let mut temp_key;
+        let temp_key;
         match key {
             Some(key) => temp_key = key.to_vec(),
             None => {

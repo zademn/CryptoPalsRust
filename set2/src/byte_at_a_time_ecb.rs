@@ -1,3 +1,4 @@
+use crate::oracle::Encrypt;
 use crate::pkcs7_padding::pkcs7_pad;
 use aes::cipher;
 use base64;
@@ -6,8 +7,6 @@ use rand::Rng;
 use set1::aes_ecb::aes_encrypt;
 use set1::detect_ecb::detect_ecb;
 use utils::number::u8_to_ascii;
-
-use crate::oracle::Encrypt;
 
 pub struct EcbOracle {
     key: Vec<u8>,
