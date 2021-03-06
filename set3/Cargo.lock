@@ -937,6 +937,7 @@ dependencies = [
 name = "set3"
 version = "0.1.0"
 dependencies = [
+ "aes",
  "base64",
  "bitvec",
  "byteorder",

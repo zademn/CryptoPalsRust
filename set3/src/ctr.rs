@@ -10,8 +10,8 @@ pub struct CtrMode {
 
 impl CtrMode {
     pub fn new(key: Option<&[u8]>, iv: Option<&[u8]>) -> CtrMode {
-        let temp_key;
         // check if key or iv was provided, else generate random
+        let temp_key;
         match key {
             Some(key) => temp_key = key.to_vec(),
             None => {
@@ -40,14 +40,26 @@ impl CtrMode {
         // Generate keystream
         let keystream_len = (plaintext.len() / 16 + 1) * 16;
         let mut keystream = vec![0 as u8; keystream_len];
-        for i in (0..keystream_len / 16) {
-            keystream[i..i + 16].clone_from_slice(&self.counter);
+        let mut ciphertext: Vec<u8> = Vec::new();
+
+        // This gives a different keystream after encryption
+        // IDK why
+        // for _ in plaintext.chunks(16) {
+        //     keystream.extend_from_slice(&self.counter);
+        //     self.increment_counter();
+        // }
+
+        for plaintext_chunk in plaintext.chunks(16) {
+            let keystream = aes_encrypt(&self.counter, &self.key);
+            println!("{:?}", keystream);
+            ciphertext.extend_from_slice(&xor(&plaintext_chunk, &keystream));
             self.increment_counter();
         }
         //Encrypt keystream
-        let keystream = aes_encrypt(&keystream, &self.key);
-
-        return xor(&plaintext, &keystream[..plaintext.len()]);
+        // let keystream = aes_encrypt(&keystream, &self.key);
+        // println!("{:?}", keystream);
+        // return xor(&plaintext, &keystream[..plaintext.len()]);
+        return ciphertext;
     }
 
     fn increment_counter(&mut self) {
