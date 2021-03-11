@@ -1,5 +1,5 @@
 [package]
-name = "utils"
+name = "set5"
 version = "0.1.0"
 authors = ["Stroia Dacian <zademnwalves@gmail.com>"]
 edition = "2018"
@@ -7,10 +7,16 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-byteorder = "1.4.2"
-duplicate = "0.2.9"
 num-bigint = { version = "0.7.0", features = ["rand", "prime"] , package = "num-bigint-dig"}
-num-traits = "0.2.14"
 ramp = "0.5.9"
 rand = "0.8.3"
-rayon = "1.5.0"
+sha-1 = "0.9.4"
+set1 = {path="../set1/"}
+set2 = {path="../set2/"}
+set3 = {path="../set3/"}
+utils = {path="../utils/"}
+sha2 = "0.9.3"
+hmac = "0.10.1"
+crypto-mac = "0.10.0"
+num-primes = "0.1.2"
+glass_pumpkin = "0.4.0"
