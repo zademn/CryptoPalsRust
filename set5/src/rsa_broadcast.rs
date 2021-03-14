@@ -1,6 +1,6 @@
 use crate::rsa::Rsa;
-use num_bigint::{BigInt, BigUint, Sign};
-use utils::algorithms::{crt, mod_inv};
+use num_bigint::{BigInt, Sign};
+use utils::algorithms::{crt};
 use utils::number::u8_to_ascii;
 
 pub fn challenge40() {

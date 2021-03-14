@@ -1,8 +1,5 @@
-use crate::diffie_hellman::DiffieHellman;
 use num_bigint::{BigUint, RandBigInt};
-use rand::{thread_rng, Rng};
 use sha2::{Digest, Sha256};
-use utils::number::{random_bytes, u8_to_ascii};
 use hmac::{Hmac, Mac, NewMac};
 use crypto_mac::MacError;
 

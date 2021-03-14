@@ -1,8 +1,7 @@
 use crate::srp::{SrpClient, SrpServer};
-use num_bigint::{BigUint, RandBigInt};
+use num_bigint::BigUint;
 use sha2::{Digest, Sha256};
 use hmac::{Hmac, Mac, NewMac};
-use crypto_mac::MacError;
 
 pub fn srp_exchange_zero(client: &SrpClient, server: &SrpServer, client_pk: BigUint) {
     // C -> S

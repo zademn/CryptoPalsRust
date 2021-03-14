@@ -1,5 +1,4 @@
-use std::hash;
-
+#[allow(unused_imports)]
 use crate::diffie_hellman::DiffieHellman;
 use num_bigint::BigUint;
 use set2::cbc_using_ecb::CbcOracle;
