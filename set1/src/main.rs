@@ -16,5 +16,5 @@ fn main() {
     //repeated_xor::challenge5();
     //break_rep_key_xor::challenge6();
     //aes_ecb::challenge7();
-    detect_ecb::challenge8();
+    //detect_ecb::challenge8();
 }
