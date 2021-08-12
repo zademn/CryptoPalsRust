@@ -7,4 +7,5 @@ members = [
     "set5",
     "set6",
     "utils",
+    "runner",
 ]

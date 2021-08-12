@@ -1,19 +1,16 @@
 [package]
 name = "set2"
 version = "0.1.0"
-authors = ["Stroia Dacian <zademnwalves@gmail.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-aes = "0.6.0"
+aes = "0.7.4"
 base64 = "0.13.0"
-block-modes = "0.7.0"
-hex = "0.4.2"
-indexmap = "1.6.1"
+block-modes = "0.8.1"
+hex = "0.4.3"
+indexmap = "1.7.0"
 lazy_static = "1.4.0"
-rand = "0.8.3"
-reqwest = "0.11.0"
+rand = "0.8.4"
+reqwest = "0.11.4"
 set1 = {path="../set1/"}
 utils = {path="../utils/"}
