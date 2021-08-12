@@ -11,6 +11,9 @@ pub fn random_bytes(n: usize) -> Vec<u8> {
 }
 
 pub fn xor(s1: &[u8], s2: &[u8]) -> Vec<u8> {
+    s1.iter().zip(s2).map(|(&a, &b)| a ^ b).collect()
+}
+pub fn xor_par(s1: &[u8], s2: &[u8]) -> Vec<u8> {
     let s3: Vec<u8> = s1.par_iter().zip(s2).map(|(a, b)| a ^ b).collect();
     s3
 }

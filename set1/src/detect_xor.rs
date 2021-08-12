@@ -25,6 +25,6 @@ pub fn challenge4() -> Result<(), Box<dyn Error>> {
         .map(|line| single_byte_xor::single_byte_xor(&hex::decode(line).unwrap()))
         .collect();
     scores.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
-    println!("{}", scores[0].0);
+    println!("Found: {}", scores[0].0);
     Ok(())
 }

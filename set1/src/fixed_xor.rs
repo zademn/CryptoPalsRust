@@ -1,6 +1,6 @@
 use rayon::prelude::*;
 
-pub fn xor(s1b: &[u8], s2b: &[u8]) -> Vec<u8> {
+pub fn xor_par(s1b: &[u8], s2b: &[u8]) -> Vec<u8> {
     let s3b: Vec<_> = s1b.par_iter().zip(s2b).map(|(a, b)| a ^ b).collect();
     s3b
 }
@@ -17,9 +17,13 @@ pub fn challenge2() {
     let s1 = "1c0111001f010100061a024b53535009181c";
     let s2 = "686974207468652062756c6c277320657965";
 
-    println!("{:?}", xor_hex(s1, s2));
+    println!("s1: {}\ns2: {}", s1, s2);
+    println!("xored: {:?}", xor_hex(s1, s2));
     println!(
-        "{:?}",
-        hex::encode(xor(&hex::decode(s1).unwrap(), &hex::decode(s2).unwrap()))
+        "xored: {:?}",
+        hex::encode(xor_par(
+            &hex::decode(s1).unwrap(),
+            &hex::decode(s2).unwrap()
+        ))
     );
 }

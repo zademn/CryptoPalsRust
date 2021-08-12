@@ -1,12 +1,10 @@
-
-
 use crate::oracle::Encrypt;
-use crate::pkcs7_padding::{pkcs7_pad};
+use crate::pkcs7_padding::pkcs7_pad;
 
 use rand::Rng;
 use set1::aes_ecb::{aes_decrypt, aes_encrypt};
-use set1::fixed_xor::xor;
-use std::{error::Error};
+use std::error::Error;
+use utils::number::xor;
 use utils::number::u8_to_ascii;
 
 pub struct CbcOracle {

@@ -1,5 +1,3 @@
-
-
 use set1::single_byte_xor::single_byte_xor;
 use std::fs;
 use utils::number::{u8_to_ascii, xor};
@@ -35,7 +33,7 @@ pub fn fixed_nonce_ctr_sub(content: &Vec<Vec<u8>>) -> Vec<u8> {
 pub fn challenge19_20() {
     // this is for 20 too i guess...
 
-    let content = fs::read_to_string("../files/19.txt").expect("error on reading file");
+    let content = fs::read_to_string("files/19.txt").expect("error on reading file");
     //println!("{}", content);
     let content = content.split("\r\n").collect::<Vec<&str>>();
     //println!("{:?}", content);

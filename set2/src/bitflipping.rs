@@ -73,14 +73,14 @@ pub fn bitflipping(oracle: &CbcOracleBitflip, iv: &[u8]) {
     ciphertext[prefix_len + pad_len + 11] =
         b'X' ^ ciphertext[prefix_len + pad_len + 11] ^ b';';
 
-    println!("{}", oracle.decrypt(&ciphertext, iv));
+    println!("contains admin=true? {}", oracle.decrypt(&ciphertext, iv));
 }
 pub fn challenge16() {
     let oracle = CbcOracleBitflip::new(None);
     let iv = random_bytes(16);
     let ciphertext = oracle.encrypt(b"admin", &iv);
     //println!("{}", u8_to_ascii(&ciphertext));
-    println!("{:?}", oracle.decrypt(&ciphertext, &iv));
+    println!("contains admin=true? {:?}", oracle.decrypt(&ciphertext, &iv));
 
     bitflipping(&oracle, &iv);
 }

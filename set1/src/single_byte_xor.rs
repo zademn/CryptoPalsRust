@@ -84,5 +84,8 @@ pub fn challenge3() {
         .unwrap();
     //Cooking MC's like a pound of bacon
     let (good_str, score, key) = single_byte_xor(&s);
-    println!("{}, {}, {}", good_str, score, key);
+    println!(
+        "Decoded string{}\nbyte score{},\nkey byte: {}",
+        good_str, score, key
+    );
 }

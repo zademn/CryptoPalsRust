@@ -34,9 +34,9 @@ pub fn challenge9() {
 
     let mut s_pad = pkcs7_pad(s.as_bytes(), Some(20));
     let s_pad_len = s_pad.len();
-    println!("{:?}", s_pad);
+    println!("Padded: {:?}", s_pad);
     let s_unpad = pkcs7_unpad(&s_pad).unwrap();
-    println!("{:?}", s_unpad);
+    println!("Unpadded: {:?}", s_unpad);
 
     // Invalid padding
     s_pad[s_pad_len - 2..].copy_from_slice(&[2, 3]);
