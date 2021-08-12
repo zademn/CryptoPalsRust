@@ -1,4 +1,4 @@
-use hex;
+
 use rayon::prelude::*;
 
 pub fn repeated_xor_hex(s1: &str, s2: &str) -> String {
@@ -12,7 +12,7 @@ pub fn repeated_xor_hex(s1: &str, s2: &str) -> String {
         .map(|i| &s1_dec[i] ^ &s2_dec[i % l2])
         .collect();
 
-    return hex::encode(s3);
+    hex::encode(s3)
 }
 
 pub fn challenge5() {

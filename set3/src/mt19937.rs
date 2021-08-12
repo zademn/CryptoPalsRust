@@ -1,8 +1,8 @@
 use std::usize;
-use std::num::Wrapping;
+
 pub fn get_lowest_bits(n: usize, num_bits: usize) -> usize {
     // Return the lowest num_bits of n
-    return (n & ((1  << num_bits) - 1)) as usize;
+    (n & ((1  << num_bits) - 1)) as usize
 }
 // 64 bit system, on 32b I would've implemented with Wrapping
 #[derive(Default, Debug)]
@@ -32,30 +32,30 @@ impl Mt19937 {
             n: 624,        // degree of recurrence
             m: 397,        // middle word, an offset
             r: 31,         // separation point of one word
-            a: (0x9908B0DF as usize), // coefficients of the rational normal form twist matrix
+            a: 0x9908B0DF_usize, // coefficients of the rational normal form twist matrix
             u: 11,         // additional Mersenne Twister tempering bit shifts/masks
-            d: (0xFFFFFFFF as usize), // additional Mersenne Twister tempering bit shifts/masks
+            d: 0xFFFFFFFF_usize, // additional Mersenne Twister tempering bit shifts/masks
             s: 7,          // TGFSR(R) tempering bit shifts
-            b: (0x9D2C5680 as usize), // TGFSR(R) tempering bitmasks
+            b: 0x9D2C5680_usize, // TGFSR(R) tempering bitmasks
             t: 15,         // TGFSR(R) tempering bit shifts
-            c: (0xEFC60000 as usize),   // TGFSR(R) tempering bitmasks
+            c: 0xEFC60000_usize,   // TGFSR(R) tempering bitmasks
             l: 18,         // additional Mersenne Twister tempering bit shifts/masks
-            f: (1812433253 as usize),
+            f: 1812433253_usize,
             ..Default::default()
         };
-        mt.lower_mask = ((1 as usize) << mt.r) - (1 as usize);
+        mt.lower_mask = (1_usize << mt.r) - 1_usize;
         mt.upper_mask = get_lowest_bits((!mt.lower_mask) as usize, mt.w);
         //println!("{:?}", mt);
         mt.index = mt.n + 1;
         
         match seed {
             Some(seed) => mt.seed(seed),
-            None => mt.seed(5489 as usize),
+            None => mt.seed(5489_usize),
         }
-        return mt;
+        mt
     }
     pub fn seed(&mut self, seed: usize) {
-        self.state.resize(self.n, 0 as usize);
+        self.state.resize(self.n, 0_usize);
         self.index = self.n;
         self.state[0] = seed;
         for i in 1..self.n {
@@ -80,7 +80,7 @@ impl Mt19937 {
         y = y ^ (y >> self.l);
         self.index+=1;
         
-        return Ok(get_lowest_bits(y, self.w));
+        Ok(get_lowest_bits(y, self.w))
     }
 
     fn twist(&mut self){
@@ -88,7 +88,7 @@ impl Mt19937 {
             let x = (self.state[i] & self.upper_mask) + (self.state[(i+1) % self.n] & self.lower_mask);
             let mut x_a = x >> 1;
             if (x % 2) != 0 {
-                x_a = x_a ^ self.a;
+                x_a ^= self.a;
             }
             self.state[i] = self.state[(i + self.m) % self.n] ^ x_a;
         }

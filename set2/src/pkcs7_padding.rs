@@ -9,9 +9,9 @@ pub fn pkcs7_unpad(s: &[u8]) -> Result<Vec<u8>, String> {
     if s[res_len..].iter().any(|&x| x != padding_number) {
         return Err(String::from("Invalid padding"));
     }
-    let mut res = vec![0 as u8; res_len];
+    let mut res = vec![0_u8; res_len];
     res[..].clone_from_slice(&s[..res_len]);
-    return Ok(res);
+    Ok(res)
 }
 
 pub fn pkcs7_pad(s: &[u8], padded_block_len: Option<usize>) -> Vec<u8> {
@@ -26,7 +26,7 @@ pub fn pkcs7_pad(s: &[u8], padded_block_len: Option<usize>) -> Vec<u8> {
 
     let mut res: Vec<u8> = vec![padding_number as u8; padded_block_len];
     res[..n].clone_from_slice(s);
-    return res;
+    res
 }
 
 pub fn challenge9() {

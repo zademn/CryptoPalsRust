@@ -26,17 +26,17 @@ pub fn get_ciphertext(s: &[u8]) -> Vec<u8> {
         println!("Generated CBC");
         let oracle = CbcOracle::new(None);
         let iv = (0..16).map(|_| rng.gen::<u8>()).collect::<Vec<u8>>();
-        return oracle.encrypt(&buf, &iv);
+        oracle.encrypt(&buf, &iv)
     } else {
         println!("Generated ECB");
         let key = (0..16).map(|_| rng.gen::<u8>()).collect::<Vec<u8>>();
-        return aes_encrypt(&buf, &key);
+        aes_encrypt(&buf, &key)
     }
 }
 
 pub fn challenge11() {
     let s: [u8; 100] = [65; 100];
-    for _ in (0..10) {
+    for _ in 0..10 {
         let ciphertext = get_ciphertext(&s);
         if detect_ecb(&ciphertext) {
             println!("Detected ECB");

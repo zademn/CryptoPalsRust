@@ -14,7 +14,7 @@ pub fn aes_encrypt(messsage: &[u8], key: &[u8]) -> Vec<u8> {
 
     let ciphertext = cipher.encrypt_vec(&messsage);
 
-    return ciphertext;
+    ciphertext
 }
 #[allow(dead_code)]
 pub fn aes_decrypt(ciphertext: &[u8], key: &[u8]) -> Vec<u8> {
@@ -28,7 +28,7 @@ pub fn aes_decrypt(ciphertext: &[u8], key: &[u8]) -> Vec<u8> {
 
     let message = cipher.decrypt_vec(&ciphertext).unwrap();
 
-    return message;
+    message
 }
 
 
@@ -45,10 +45,9 @@ mod tests {
         println!("Fetching data...");
         let recv =
             reqwest::blocking::get("https://cryptopals.com/static/challenge-data/7.txt")?.text()?;
-        let recv_split: Vec<_> = recv.split("\n").collect(); //split the strings
+        let recv_split: Vec<_> = recv.split('\n').collect(); //split the strings
         let ciphertext: String = recv_split[0..recv_split.len() - 1]
-            .iter()
-            .map(|s| *s)
+            .iter().copied()
             .collect(); // split into bytes
         //dbg!(&ciphertext);
     
@@ -61,7 +60,7 @@ mod tests {
         //println!("{:?}", std::str::from_utf8(&message));
         println!("{}", u8_to_ascii(&message));
     
-        return Ok(());
+        Ok(())
     }
 }
 

@@ -1,14 +1,14 @@
 use crate::single_byte_xor;
 
 use rayon::prelude::*;
-use reqwest;
+
 use std::error::Error;
 
 pub fn challenge4() -> Result<(), Box<dyn Error>> {
     println!("Fetching data...");
     let recv =
         reqwest::blocking::get("https://cryptopals.com/static/challenge-data/4.txt")?.text()?;
-    let recv_split: Vec<_> = recv.split("\n").collect();
+    let recv_split: Vec<_> = recv.split('\n').collect();
 
     println!("Calculating...");
     
@@ -24,5 +24,5 @@ pub fn challenge4() -> Result<(), Box<dyn Error>> {
     let mut scores:Vec<_> = recv_split.par_iter().map(|line| single_byte_xor::single_byte_xor(&hex::decode(line).unwrap())).collect();
     scores.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
     println!("{}", scores[0].0);
-    return Ok(());
+    Ok(())
 }

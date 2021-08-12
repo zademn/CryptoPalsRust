@@ -1,8 +1,8 @@
-use reqwest;
+
 
 use crate::oracle::Encrypt;
 use crate::pkcs7_padding::{pkcs7_pad};
-use base64;
+
 use rand::Rng;
 use set1::aes_ecb::{aes_decrypt, aes_encrypt};
 use set1::fixed_xor::xor;
@@ -23,7 +23,7 @@ impl CbcOracle {
                 temp_key = (0..16).map(|_| rng.gen::<u8>()).collect::<Vec<u8>>();
             }
         }
-        return CbcOracle { key: temp_key };
+        CbcOracle { key: temp_key }
     }
     pub fn decrypt(&self, ciphertext: &[u8], iv: &[u8]) -> Vec<u8> {
         // message len must be a multiple of 16
@@ -38,7 +38,7 @@ impl CbcOracle {
             plaintext.append(&mut message_block); // append mi
             xor_block = ciphertext[i..i + 16].to_vec();
         }
-        return plaintext;
+        plaintext
     }
 }
 impl Encrypt for CbcOracle {
@@ -56,7 +56,7 @@ impl Encrypt for CbcOracle {
             ciphertext_block = aes_encrypt(&temp, &self.key); // ci = Enc(m xor ci-1)
             ciphertext.append(&mut ciphertext_block.to_vec()); // append ci to final c
         }
-        return ciphertext;
+        ciphertext
     }
 }
 
@@ -74,7 +74,7 @@ pub fn challenge10() -> Result<(), Box<dyn Error>> {
     println!("Fetching data...");
     let recv =
         reqwest::blocking::get("https://cryptopals.com/static/challenge-data/10.txt")?.text()?;
-    let recv_split: Vec<_> = recv.split("\n").collect(); //split the strings
+    let recv_split: Vec<_> = recv.split('\n').collect(); //split the strings
 
     let ciphertext: Vec<u8> = recv_split[0..recv_split.len() - 1]
         .iter() // iter through the strings

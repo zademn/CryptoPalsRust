@@ -1,4 +1,4 @@
-use hex;
+
 use lazy_static::lazy_static;
 use rayon::prelude::*;
 use std::collections::HashMap;
@@ -43,18 +43,18 @@ fn score_string(s: &str) -> f64 {
         .par_chars()
         .map(|c| {
             let mut x = c;
-            if 'A' <= x && x <= 'Z' {
+            if ('A'..='Z').contains(&x) {
                 x = (x as u8 + 32) as char;
             }
-            if 'a' <= x && x <= 'z' || x == ' ' {
-                return CHARACTER_FREQ[&x];
+            if ('a'..='z').contains(&x) || x == ' ' {
+                CHARACTER_FREQ[&x]
             } else {
-                return 0.;
+                0.
             }
         })
         .sum();
 
-    return score;
+    score
 }
 pub fn single_byte_xor(s: &[u8]) -> (String, f64, u8) {
     //println!("{}", CHARACTER_FREQ[&'a']);
@@ -77,7 +77,7 @@ pub fn single_byte_xor(s: &[u8]) -> (String, f64, u8) {
         }
     }
     //println!("{}", s2);
-    return (s2, max_score, key);
+    (s2, max_score, key)
 }
 
 pub fn challenge3() {

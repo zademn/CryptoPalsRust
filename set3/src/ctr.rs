@@ -1,5 +1,5 @@
 use byteorder::{ByteOrder, LittleEndian};
-use set1::aes_ecb::{aes_decrypt, aes_encrypt};
+use set1::aes_ecb::{aes_encrypt};
 use utils::number::{random_bytes, u8_to_ascii, xor};
 
 pub struct CtrMode {
@@ -27,19 +27,19 @@ impl CtrMode {
         }
 
         // init counter
-        let mut counter = vec![0 as u8; 16];
+        let mut counter = vec![0_u8; 16];
         counter[..8].clone_from_slice(&temp_iv);
 
-        return CtrMode {
+        CtrMode {
             key: temp_key.to_vec(),
             counter: counter.to_vec(),
             iv: temp_iv,
-        };
+        }
     }
     pub fn encrypt(&mut self, plaintext: &[u8]) -> Vec<u8> {
         // Generate keystream
         let keystream_len = (plaintext.len() / 16 + 1) * 16;
-        let mut keystream = vec![0 as u8; keystream_len];
+        let _keystream = vec![0_u8; keystream_len];
         let mut ciphertext: Vec<u8> = Vec::new();
 
         // This gives a different keystream after encryption
@@ -59,7 +59,7 @@ impl CtrMode {
         // let keystream = aes_encrypt(&keystream, &self.key);
         // println!("{:?}", keystream);
         // return xor(&plaintext, &keystream[..plaintext.len()]);
-        return ciphertext;
+        ciphertext
     }
 
     fn increment_counter(&mut self) {
@@ -77,14 +77,14 @@ impl CtrMode {
                 temp_iv = random_bytes(8);
             }
         }
-        self.counter = vec![0 as u8; 16];
+        self.counter = vec![0_u8; 16];
         self.counter[..8].clone_from_slice(&temp_iv);
     }
 }
 
 pub fn challenge18() {
     let key = b"YELLOW SUBMARINE";
-    let iv = vec![0 as u8; 8];
+    let iv = vec![0_u8; 8];
 
     println!("Testing CtrMode...");
     let plaintext = b"This is a test plaintext";

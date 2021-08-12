@@ -1,9 +1,9 @@
-use hex;
+
 use rayon::prelude::*;
 
 pub fn xor(s1b: &[u8], s2b: &[u8]) -> Vec<u8> {
     let s3b: Vec<_> = s1b.par_iter().zip(s2b).map(|(a, b)| a ^ b).collect();
-    return s3b;
+    s3b
 }
 pub fn xor_hex(s1: &str, s2: &str) -> String {
     let s1b = hex::decode(s1).unwrap();
@@ -11,7 +11,7 @@ pub fn xor_hex(s1: &str, s2: &str) -> String {
 
     let s3: Vec<_> = s1b.par_iter().zip(s2b).map(|(a, b)| a ^ b).collect();
 
-    return hex::encode(s3);
+    hex::encode(s3)
 }
 
 pub fn challenge2() {

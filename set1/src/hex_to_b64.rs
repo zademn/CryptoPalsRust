@@ -1,8 +1,8 @@
-use base64; //add these in dependencies
-use hex;
+ //add these in dependencies
+
 
 pub fn hex_to_b64(s: &str) -> String {
-    return base64::encode(hex::decode(s).unwrap());
+    base64::encode(hex::decode(s).unwrap())
 }
 
 pub fn challenge1(){

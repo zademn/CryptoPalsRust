@@ -1,8 +1,8 @@
 mod number;
 mod algorithms;
-use num_bigint::{BigInt, BigUint};
-use number::{random_bytes, u8_to_ascii};
-use ramp::Int;
+use num_bigint::{BigInt};
+
+
 use algorithms::mod_inv;
 
 fn main() {

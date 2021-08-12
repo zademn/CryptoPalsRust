@@ -6,7 +6,6 @@ use reqwest;
 use std::collections::VecDeque;
 use std::error::Error;
 
-
 fn hamming_distance_string(s1b: &[u8], s2b: &[u8]) -> u32 {
     let ham = s1b
         .par_iter()
@@ -17,8 +16,15 @@ fn hamming_distance_string(s1b: &[u8], s2b: &[u8]) -> u32 {
     return ham;
 }
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
+    use crate::single_byte_xor;
+    use base64;
+    use itertools::Itertools;
+    use reqwest;
+    use std::collections::VecDeque;
+    use std::error::Error;
+    #[test]
     pub fn challenge6() -> Result<(), Box<dyn Error>> {
         let s1 = "this is a test";
         let s2 = "wokka wokka!!!";

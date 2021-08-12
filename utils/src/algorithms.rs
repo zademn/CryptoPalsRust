@@ -1,6 +1,6 @@
 use num_bigint::algorithms::xgcd;
 use num_bigint::BigInt;
-use num_traits::{One, Zero};
+
 
 // pub fn mod_inv(n: &BigInt, modulus: &BigInt) -> BigInt {
 //     let (zero, one): (BigInt, BigInt) = (Zero::zero(), One::one());
@@ -37,5 +37,5 @@ pub fn crt(residues: Vec<BigInt>, moduli: Vec<BigInt>) -> Option<BigInt> {
         sum += residue * mod_inv(&p, &modulus)? * p
     }
 
-    return Some(sum % prod);
+    Some(sum % prod)
 }
