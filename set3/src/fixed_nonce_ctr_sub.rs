@@ -1,5 +1,5 @@
-use crate::ctr::CtrMode;
-use base64;
+
+
 use set1::single_byte_xor::single_byte_xor;
 use std::fs;
 use utils::number::{u8_to_ascii, xor};
@@ -30,7 +30,7 @@ pub fn fixed_nonce_ctr_sub(content: &Vec<Vec<u8>>) -> Vec<u8> {
         let (_, _, b) = single_byte_xor(&s);
         keystream.push(b);
     }
-    return keystream;
+    keystream
 }
 pub fn challenge19_20() {
     // this is for 20 too i guess...

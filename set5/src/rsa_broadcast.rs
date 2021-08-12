@@ -7,7 +7,7 @@ pub fn challenge40() {
     let e = BigInt::from(3);
     let rsa0 = Rsa::new(512, Some(e.clone()));
     let rsa1 = Rsa::new(512, Some(e.clone()));
-    let rsa2 = Rsa::new(512, Some(e.clone()));
+    let rsa2 = Rsa::new(512, Some(e));
 
     let m = b"nuclear_codes";
 

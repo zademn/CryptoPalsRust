@@ -1,9 +1,7 @@
-
-
 use itertools::Itertools;
-
 use std::error::Error;
 
+#[allow(dead_code)]
 pub fn detect_ecb(s: &[u8]) -> bool {
     let s_split = s.chunks(16); // split in chunks of 16B
                                 // check if 2 are equal
@@ -14,6 +12,7 @@ pub fn detect_ecb(s: &[u8]) -> bool {
     }
     false
 }
+
 pub fn challenge8() -> Result<(), Box<dyn Error>> {
     let recv =
         reqwest::blocking::get("https://cryptopals.com/static/challenge-data/8.txt")?.text()?;

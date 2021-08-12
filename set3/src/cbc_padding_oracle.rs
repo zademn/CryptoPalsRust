@@ -1,8 +1,8 @@
-use base64;
+
 use rand::seq::SliceRandom;
 use set2::cbc_using_ecb::CbcOracle;
 use set2::oracle::Encrypt;
-use set2::pkcs7_padding::{pkcs7_pad, pkcs7_unpad};
+use set2::pkcs7_padding::{pkcs7_unpad};
 use utils::number::{random_bytes, u8_to_ascii};
 
 ////https://www.youtube.com/watch?v=O5SeQxErXA4&t=3s
@@ -19,7 +19,7 @@ impl CbcOraclePadding {
                 temp_key = random_bytes(16);
             }
         }
-        return CbcOraclePadding { key: temp_key };
+        CbcOraclePadding { key: temp_key }
     }
 
     fn decrypt(&self, ciphertext: &[u8], iv: &[u8]) -> bool {
@@ -27,8 +27,8 @@ impl CbcOraclePadding {
         let plaintext = oracle.decrypt(&ciphertext, iv);
         let plaintext = pkcs7_unpad(&plaintext);
         match plaintext {
-            Ok(_) => return true,
-            Err(_) => return false,
+            Ok(_) => true,
+            Err(_) => false,
         }
     }
 }
@@ -36,7 +36,7 @@ impl Encrypt for CbcOraclePadding {
     fn encrypt(&self, plaintext: &[u8], iv: &[u8]) -> Vec<u8> {
         let oracle = CbcOracle::new(Some(&self.key));
         let ciphertext = oracle.encrypt(&plaintext, iv);
-        return ciphertext;
+        ciphertext
     }
 }
 
@@ -53,22 +53,22 @@ pub fn padding_oracle_attack(oracle: &CbcOraclePadding, iv: &[u8], ciphertext: &
     // Go through each block
     // i iterates the block
     for i in 1..ciphertext_chunks.len() {
-        let mut plaintext_block: Vec<u8> = vec![0 as u8; 16]; // the block to be decrypted
+        let mut plaintext_block: Vec<u8> = vec![0_u8; 16]; // the block to be decrypted
         // j is the current position we want to decrypt
         // start from right to left -> block_size - 1 to 0
         for j in (0..block_size).rev() {
             let mut block1 = ciphertext_chunks[i - 1].to_vec();
-            let mut block2 = ciphertext_chunks[i].to_vec();
+            let block2 = ciphertext_chunks[i].to_vec();
             let expected_pad = (block_size - j) as u8;
 
             // change bytes of block1 based on the plaintext found to make the padding work
             // k iterates from j + 1 -> block_size -1  (the bytes on the right of j)
-            for k in (j + 1..block_size) {
+            for k in j + 1..block_size {
                 block1[k] = ciphertext_chunks[i - 1][k] ^ plaintext_block[k] ^ expected_pad
             }
             //byte is the byte that we brute force
             let mut possible_bytes: Vec<u8> = vec![];
-            for byte in (0..256 as usize) {
+            for byte in 0..256_usize {
                 block1[j] = byte as u8;
 
                 // craft the new ciphertext
@@ -92,15 +92,15 @@ pub fn padding_oracle_attack(oracle: &CbcOraclePadding, iv: &[u8], ciphertext: &
                     let mut plaintext_block_tmp: Vec<u8> = plaintext_block.clone();
                     plaintext_block_tmp[j] = possible_byte; // Put the new byte in the plaintext_tmp
                     let mut block1_tmp = block1.to_vec();
-                    let mut block2_tmp = block2.to_vec();
+                    let block2_tmp = block2.to_vec();
                     let expected_pad = (block_size - j2) as u8;
 
                     // change bytes of block1 based on the plaintext found to make the padding work
                     // k iterates from j + 1 -> block_size -1  (the bytes on the right of j)
-                    for k in (j2..block_size) {
+                    for k in j2..block_size {
                         block1_tmp[k] = ciphertext_chunks[i - 1][k] ^ plaintext_block_tmp[k] ^ expected_pad
                     }
-                    for byte in (0..256 as usize) {
+                    for byte in 0..256_usize {
                         block1_tmp[j2] = byte as u8;
 
                         // craft the new ciphertext
@@ -126,7 +126,7 @@ pub fn padding_oracle_attack(oracle: &CbcOraclePadding, iv: &[u8], ciphertext: &
     }
 
     //println!("{}, {}", u8_to_ascii(&plaintext), plaintext.len());
-    return pkcs7_unpad(&plaintext).unwrap();
+    pkcs7_unpad(&plaintext).unwrap()
 }
 pub fn challenge17() {
     let ss = vec![

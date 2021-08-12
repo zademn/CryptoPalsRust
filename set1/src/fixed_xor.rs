@@ -1,4 +1,3 @@
-
 use rayon::prelude::*;
 
 pub fn xor(s1b: &[u8], s2b: &[u8]) -> Vec<u8> {
@@ -21,9 +20,6 @@ pub fn challenge2() {
     println!("{:?}", xor_hex(s1, s2));
     println!(
         "{:?}",
-        hex::encode(xor(
-            &hex::decode(s1).unwrap(),
-            &hex::decode(s2).unwrap()
-        ))
+        hex::encode(xor(&hex::decode(s1).unwrap(), &hex::decode(s2).unwrap()))
     );
 }

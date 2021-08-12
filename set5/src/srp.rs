@@ -17,18 +17,18 @@ impl SrpClient {
         let mut rng = rand::thread_rng();
         let sk = rng.gen_biguint(2048);
 
-        return SrpClient {
-            p: p,
-            g: g,
-            k: k,
-            email: email,
-            password: password,
-            sk: sk,
-        };
+        SrpClient {
+            p,
+            g,
+            k,
+            email,
+            password,
+            sk,
+        }
     }
 
     pub fn get_pub_key(&self) -> BigUint {
-        return self.g.modpow(&self.sk, &self.p);
+        self.g.modpow(&self.sk, &self.p)
     }
 
     pub fn generate_hmac(&self, salt: BigUint, server_pk: BigUint, u: BigUint) -> Vec<u8> {
@@ -48,7 +48,7 @@ impl SrpClient {
 
         println!("client {}", S);
 
-        let mut buf = S.to_bytes_be();
+        let buf = S.to_bytes_be();
         let mut hasher = Sha256::new();
         hasher.update(buf);
         let K = hasher.finalize();
@@ -57,7 +57,7 @@ impl SrpClient {
         let mut hmac = Hmac::<Sha256>::new_varkey(&K).expect("error on hmac creation");
         hmac.update(&salt.to_bytes_be());
         let res = hmac.finalize();
-        return res.into_bytes().to_vec();
+        res.into_bytes().to_vec()
     }
 }
 pub struct SrpServer {
@@ -94,20 +94,20 @@ impl SrpServer {
 
         // secret key
         let sk = rng.gen_biguint(2048);
-        return SrpServer {
-            p: p,
-            g: g,
-            k: k,
-            email: email,
-            password: password,
-            salt: salt,
-            v: v,
-            sk: sk,
-        };
+        SrpServer {
+            p,
+            g,
+            k,
+            email,
+            password,
+            salt,
+            v,
+            sk,
+        }
     }
 
     pub fn get_pub_key(&self) -> BigUint {
-        return (&self.k * &self.v + self.g.modpow(&self.sk, &self.p)) % &self.p;
+        (&self.k * &self.v + self.g.modpow(&self.sk, &self.p)) % &self.p
     }
 
     pub fn validate_client(&self, client_pk: BigUint,  u: BigUint, client_mac: &[u8]) -> Result<(), MacError> {
@@ -117,7 +117,7 @@ impl SrpServer {
         println!("server {}", S);
 
         // 2
-        let mut buf = S.to_bytes_be();
+        let buf = S.to_bytes_be();
         let mut hasher = Sha256::new();
         hasher.update(buf);
         let K = hasher.finalize();
@@ -126,13 +126,13 @@ impl SrpServer {
         let mut hmac = Hmac::<Sha256>::new_varkey(&K).expect("error on hmac creation");
         hmac.update(&self.salt.to_bytes_be());
         
-        return hmac.verify(&client_mac);
+        hmac.verify(&client_mac)
     }
 }
 
 pub fn srp_exchange(client: &SrpClient, server: &SrpServer) {
     // C -> S
-    let (email, client_pk) = (client.email.clone(), client.get_pub_key());
+    let (_email, client_pk) = (client.email.clone(), client.get_pub_key());
 
     // S -> C
     let (salt, server_pk) = (server.salt.clone(), server.get_pub_key());
@@ -156,13 +156,13 @@ pub fn srp_exchange(client: &SrpClient, server: &SrpServer) {
 }
 
 pub fn challenge36() {
-    let k = BigUint::from(3 as usize);
+    let k = BigUint::from(3_usize);
     let password = String::from("secret_password");
     let email = String::from("me@abc.com");
-    let g = BigUint::from(2 as usize);
+    let g = BigUint::from(2_usize);
     let p = BigUint::parse_bytes(b"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff", 16).unwrap();
     let client = SrpClient::new(k.clone(), password.clone(), email.clone(), g.clone(), p.clone());
-    let server = SrpServer::new(k.clone(), password.clone(), email.clone(), g.clone(), p.clone());
+    let server = SrpServer::new(k, password, email, g, p);
 
     srp_exchange(&client, &server);
 }

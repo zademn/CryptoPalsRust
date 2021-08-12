@@ -1,4 +1,3 @@
-
 use rayon::prelude::*;
 
 pub fn repeated_xor_hex(s1: &str, s2: &str) -> String {

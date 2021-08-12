@@ -1,7 +1,7 @@
 use crate::mt19937::Mt19937;
-use rand::{thread_rng, Rng};
-use std::thread::sleep;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use rand::{Rng};
+
+use std::time::{SystemTime, UNIX_EPOCH};
 
 pub fn time_rng() -> (usize, usize) {
     let mut rng = rand::thread_rng();
@@ -18,7 +18,7 @@ pub fn time_rng() -> (usize, usize) {
 
     let t2 = rng.gen_range(40..1001);
     now += t2; // simulate waiting
-    return (mt.extract_number().unwrap(), now as usize);
+    (mt.extract_number().unwrap(), now as usize)
 }
 pub fn challenge22() {
     let (num, mut now) = time_rng();

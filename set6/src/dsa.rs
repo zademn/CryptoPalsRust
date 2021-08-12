@@ -1,9 +1,9 @@
-use indicatif::{ProgressBar, ProgressIterator};
+use indicatif::{ProgressIterator};
 use num_bigint::{BigInt, RandBigInt, Sign};
-use num_iter;
+
 use sha2::{Digest, Sha256};
 use utils::algorithms::mod_inv;
-use utils::number::{random_bytes, u8_to_ascii};
+
 
 pub struct Dsa {
     p: BigInt,
@@ -23,23 +23,23 @@ impl Dsa {
         let sk = rng.gen_bigint_range(&BigInt::from(2), &(&q - 1));
         let pk = g.modpow(&sk, &p);
 
-        let mut k_bound;
+        let k_bound;
         match nonce_strength {
-            Some(v) => k_bound = BigInt::from(v),
+            Some(v) => k_bound = v,
             None => k_bound = &q - 1,
         }
 
-        return Dsa {
-            p: p,
-            q: q,
-            g: g,
-            sk: sk,
-            pk: pk,
-            k_bound: k_bound,
-        };
+        Dsa {
+            p,
+            q,
+            g,
+            sk,
+            pk,
+            k_bound,
+        }
     }
     pub fn get_pub_key(&self) -> BigInt {
-        return self.pk.clone();
+        self.pk.clone()
     }
 
     pub fn sign(&self, msg: &[u8]) -> (BigInt, BigInt) {
@@ -90,7 +90,7 @@ impl Dsa {
         if v == r {
             return true;
         }
-        return false;
+        false
     }
 }
 
@@ -117,11 +117,11 @@ pub fn break_nonce(
             return Some(sk);
         }
     }
-    return None;
+    None
 }
 
 pub fn challenge43() {
-    let k_bound = BigInt::from(2 << 12 - 1);
+    let k_bound = BigInt::from(2 << (12 - 1));
     let dsa = Dsa::new(Some(k_bound.clone()));
     let msg = b"waddup";
     let (r, s) = dsa.sign(msg);
@@ -136,11 +136,11 @@ pub fn challenge43() {
     let pk = dsa.get_pub_key();
     let my_sk = break_nonce(
         &dsa,
-        r.clone(),
-        s.clone(),
-        h.clone(),
-        pk.clone(),
-        k_bound.clone(),
+        r,
+        s,
+        h,
+        pk,
+        k_bound,
     );
 
     println!("real sk {}", dsa.sk);

@@ -1,7 +1,7 @@
 use crate::mt19937::Mt19937;
 
 pub fn get_i_lsb(n: usize, i: usize) -> usize {
-    return (n & (1 << (i))) >> i;
+    (n & (1 << (i))) >> i
 }
 pub fn untemper_shift_right(y: usize, a: usize) -> usize {
     // y = y ^ (y >> a)
@@ -23,7 +23,7 @@ pub fn untemper_shift_right(y: usize, a: usize) -> usize {
         x = x | ((get_i_lsb(y, i) ^ get_i_lsb(x, 31 - j)) << i);
     }
 
-    return x & mask_32b;
+    x & mask_32b
 }
 
 pub fn untemper_shift_left(y: usize, a: usize, t: usize) -> usize {
@@ -42,11 +42,11 @@ pub fn untemper_shift_left(y: usize, a: usize, t: usize) -> usize {
     let mask_lsb = (1 << a) - 1; // the last `a` lsbs
 
     x = y & mask_lsb; // copy the last `a` lsbs
-    for i in (0..32 - a) {
+    for i in 0..32 - a {
         x = x | (((get_i_lsb(x, i) & get_i_lsb(t, i + a)) ^ get_i_lsb(y, i + a)) << (i + a));
-        x = x & mask_32b;
+        x &= mask_32b;
     }
-    return x & mask_32b;
+    x & mask_32b
 }
 
 pub fn untemper(y: usize, mt: &Mt19937) -> usize {
@@ -56,7 +56,7 @@ pub fn untemper(y: usize, mt: &Mt19937) -> usize {
     res = untemper_shift_left(res, mt.s, mt.b);
     res = untemper_shift_right(res, mt.u);
 
-    return res;
+    res
 }
 pub fn challenge23() {
     println!("Test untempering...");

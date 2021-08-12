@@ -17,15 +17,15 @@ impl DhParty {
     pub fn new(g: Option<BigUint>, p: Option<BigUint>, sk: Option<BigUint>) -> DhParty {
         let dh = DiffieHellman::new(g, p);
         let (sk, pk) = dh.generate_key_pair(sk);
-        return DhParty {
-            dh: dh.clone(),
-            sk: sk,
-            pk: pk,
+        DhParty {
+            dh,
+            sk,
+            pk,
             secret: Default::default(),
-        };
+        }
     }
     pub fn get_public_key(&self) -> BigUint {
-        return self.pk.clone();
+        self.pk.clone()
     }
     pub fn set_parameters(&mut self, g: Option<BigUint>, p: Option<BigUint>) {
         let dh = DiffieHellman::new(g, p);
@@ -48,7 +48,7 @@ impl DhParty {
         let iv = random_bytes(16);
         let ciphertext = oracle.encrypt(&plaintext, &iv);
 
-        return (ciphertext, iv);
+        (ciphertext, iv)
     }
     pub fn decrypt_message(&self, ciphertext: &[u8], iv: &[u8]) -> Vec<u8> {
         // generate hashed key
@@ -59,13 +59,13 @@ impl DhParty {
 
         let oracle = CbcOracle::new(Some(key));
         let plaintext = oracle.decrypt(&ciphertext, &iv);
-        return pkcs7_unpad(&plaintext).unwrap();
+        pkcs7_unpad(&plaintext).unwrap()
     }
 }
 
 pub fn key_fixing_attack(alice: &mut DhParty, bob: &mut DhParty) {
     // Get p, g, A
-    let (p, g, A) = (
+    let (p, _g, _A) = (
         alice.dh.p.clone(),
         alice.dh.g.clone(),
         alice.get_public_key(),
@@ -74,7 +74,7 @@ pub fn key_fixing_attack(alice: &mut DhParty, bob: &mut DhParty) {
     bob.set_secret(&p);
 
     // Get B
-    let B = bob.get_public_key();
+    let _B = bob.get_public_key();
     // send p to alice
     alice.set_secret(&p);
 

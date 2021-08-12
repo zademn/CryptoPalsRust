@@ -16,7 +16,7 @@ pub struct Rsa {
 
 impl Rsa {
     pub fn new(keysize: usize, e_temp: Option<BigInt>) -> Rsa {
-        let mut e;
+        let e;
         match e_temp {
             Some(v) => e = v,
             None => e = BigInt::from(65537),
@@ -42,17 +42,17 @@ impl Rsa {
         }
         let d = mod_inv(&e, &phi).unwrap();
         assert!((&d * &e) % &phi == BigInt::from(1));
-        return Rsa {
-            p: p,
-            q: q,
-            n: n.clone(),
-            phi: phi,
-            e: e,
-            d: d,
-        };
+        Rsa {
+            p,
+            q,
+            n,
+            phi,
+            e,
+            d,
+        }
     }
     pub fn get_pubkey(&self) -> (BigInt, BigInt) {
-        return (self.n.clone(), self.e.clone());
+        (self.n.clone(), self.e.clone())
     }
 
     pub fn encrypt(&self, plaintext: &[u8]) -> Vec<u8> {
@@ -60,7 +60,7 @@ impl Rsa {
         let ciphertext = plaintext.modpow(&self.e, &self.n);
         let (_, ciphertext) = ciphertext.to_bytes_be();
 
-        return ciphertext;
+        ciphertext
     }
 
     pub fn decrypt(&self, ciphertext: &[u8]) -> Vec<u8> {
@@ -68,7 +68,7 @@ impl Rsa {
         let plaintext = ciphertext.modpow(&self.d, &self.n);
         let (_, plaintext) = plaintext.to_bytes_be();
 
-        return plaintext;
+        plaintext
     }
 }
 

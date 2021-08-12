@@ -11,7 +11,6 @@ pub fn challenge4() -> Result<(), Box<dyn Error>> {
     let recv_split: Vec<_> = recv.split('\n').collect();
 
     println!("Calculating...");
-    
     // Find the string with the smallest score
     /*Normal solve*/
     // let mut scores: Vec<(String, f64, u8)> = Vec::new();
@@ -21,7 +20,10 @@ pub fn challenge4() -> Result<(), Box<dyn Error>> {
     // }
 
     /*One liner*/
-    let mut scores:Vec<_> = recv_split.par_iter().map(|line| single_byte_xor::single_byte_xor(&hex::decode(line).unwrap())).collect();
+    let mut scores: Vec<_> = recv_split
+        .par_iter()
+        .map(|line| single_byte_xor::single_byte_xor(&hex::decode(line).unwrap()))
+        .collect();
     scores.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
     println!("{}", scores[0].0);
     Ok(())

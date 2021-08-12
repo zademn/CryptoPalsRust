@@ -2,7 +2,7 @@
 use crate::mitm_key_fixing::DhParty;
 use num_bigint::BigUint;
 use set2::cbc_using_ecb::CbcOracle;
-use set2::oracle::Encrypt;
+
 use set2::pkcs7_padding::pkcs7_unpad;
 use sha1::{Digest, Sha1};
 use std::error::Error;
@@ -34,13 +34,13 @@ pub fn negotiated_groups(alice: &mut DhParty, bob: &mut DhParty, g: &BigUint) {
 
     // temp key
     let mut key = b"1234".to_vec();
-    if *g == BigUint::from(1 as usize) {
+    if *g == BigUint::from(1_usize) {
         // for g = 1 => key = 1
         key = b"1".to_vec();
-    } else if *g == BigUint::from(0 as usize) {
+    } else if *g == BigUint::from(0_usize) {
         // for g = 1 => key = 1
         key = b"0".to_vec();
-    } else if *g == alice.dh.p.clone() - 1 as usize {
+    } else if *g == alice.dh.p.clone() - 1_usize {
         key = b"1".to_vec();
     }
     // first batch
@@ -69,10 +69,10 @@ pub fn negotiated_groups(alice: &mut DhParty, bob: &mut DhParty, g: &BigUint) {
 
     // for g = p - 1 = -1 mod p try key = p-1 too
     if let Err(_err) = func() {
-        let key_temp = (alice.dh.p.clone() - 1 as usize)
+        let key_temp = (alice.dh.p.clone() - 1_usize)
             .to_str_radix(10)
             .into_bytes();
-        key = key_temp.clone();
+        key = key_temp;
         println!("Using key = {}", u8_to_ascii(&key));
 
         let mut hasher = Sha1::new();
@@ -99,12 +99,12 @@ pub fn challenge35() {
     let mut alice = DhParty::new(None, None, None);
     let mut bob = DhParty::new(None, None, None);
 
-    negotiated_groups(&mut alice, &mut bob, &BigUint::from(1 as usize));
+    negotiated_groups(&mut alice, &mut bob, &BigUint::from(1_usize));
     println!();
-    negotiated_groups(&mut alice, &mut bob, &BigUint::from(0 as usize));
+    negotiated_groups(&mut alice, &mut bob, &BigUint::from(0_usize));
     println!();
 
     let p = alice.dh.p.clone();
-    negotiated_groups(&mut alice, &mut bob, &(p - 1 as usize));
+    negotiated_groups(&mut alice, &mut bob, &(p - 1_usize));
     println!();
 }

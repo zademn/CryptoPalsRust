@@ -9,10 +9,10 @@ struct RsaServer {
 }
 impl RsaServer {
     pub fn new(rsa: Rsa) -> RsaServer {
-        return RsaServer {
-            rsa: rsa,
+        RsaServer {
+            rsa,
             decrypted_ciphertexts: Default::default(),
-        };
+        }
     }
 
     pub fn decrypt(&mut self, ciphertext: &[u8]) -> Result<Vec<u8>, String> {
@@ -22,7 +22,7 @@ impl RsaServer {
         // add ciphertext to decrypted ciphertexts
         self.decrypted_ciphertexts.push(ciphertext.to_vec());
         let plaintext = self.rsa.decrypt(&ciphertext);
-        return Ok(plaintext);
+        Ok(plaintext)
     }
 }
 
