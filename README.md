@@ -8,10 +8,11 @@ These are my implementations of the CryptoPals challenges in Rust. I took the ch
 The project is structured as follows
 - each set has a `cargo` project
 - each challenge has a file.
-- each file has a `challenge()` function for the challenge. - This function is called in `main.rs`
-- `main.rs` has commented lines that call the `challenge()` functions
+- each file has a `challenge()` function for the challenge and the solution in it
+- call the challenges with `cargo run --bin runner <challenge_number>`
 
 The `utils` cargo project is for utils such as conversions or random number generators
+The `runner` is to run the challenges
 
 ## Enjoy! 
 
