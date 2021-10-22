@@ -9,3 +9,6 @@ members = [
     "utils",
     "runner",
 ]
+exclude= [
+	"test_stuff",
+]
